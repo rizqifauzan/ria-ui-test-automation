@@ -1,55 +1,52 @@
-package stepdefinitions;
+package com.example.webui.steps;
 
 import io.cucumber.java.en.*;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import pages.LoginPage;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginSteps {
 
     WebDriver driver;
-    LoginPage loginPage;
 
     @Given("User opens the login page")
     public void user_opens_the_login_page() {
-        System.setProperty("webdriver.chrome.driver", "/Users/riapuspita/Documents/chromedriver"); // ganti path jika perlu
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://practicetestautomation.com/practice-test-login/"); // Ganti dengan URL aplikasi asli
-        loginPage = new LoginPage(driver);
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
+        driver = new ChromeDriver(options);
+        driver.get("https://the-internet.herokuapp.com/login");
     }
 
     @When("User inputs valid username and password")
-    public void user_inputs_valid_credentials() {
-        loginPage.enterUsername("validUser");
-        loginPage.enterPassword("validPass");
+    public void user_inputs_valid_username_and_password() {
+        driver.findElement(By.id("username")).sendKeys("tomsmith");
+        driver.findElement(By.id("password")).sendKeys("SuperSecretPassword!");
     }
 
     @When("User inputs invalid username and password")
-    public void user_inputs_invalid_credentials() {
-        loginPage.enterUsername("wrongUser");
-        loginPage.enterPassword("wrongPass");
+    public void user_inputs_invalid_username_and_password() {
+        driver.findElement(By.id("username")).sendKeys("wronguser");
+        driver.findElement(By.id("password")).sendKeys("wrongpass");
     }
 
     @And("User clicks the login button")
     public void user_clicks_the_login_button() {
-        loginPage.clickLogin();
+        driver.findElement(By.cssSelector("button[type='submit']")).click();
     }
 
     @Then("User should be redirected to the dashboard")
-    public void user_should_see_dashboard() {
-        String expectedUrl = "https://example.com/dashboard";
-        assertEquals(expectedUrl, driver.getCurrentUrl());
+    public void user_should_be_redirected_to_the_dashboard() {
+        String message = driver.findElement(By.id("flash")).getText();
+        assertTrue(message.contains("You logged into a secure area!"));
         driver.quit();
     }
 
     @Then("User should see an error message")
-    public void user_should_see_error_message() {
-        // Misalnya ada teks error di halaman
-        boolean errorDisplayed = driver.getPageSource().contains("Invalid username or password");
-        assertTrue(errorDisplayed);
+    public void user_should_see_an_error_message() {
+        String message = driver.findElement(By.id("flash")).getText();
+        assertTrue(message.contains("Your username is invalid!") || message.contains("Your password is invalid!"));
         driver.quit();
     }
 }

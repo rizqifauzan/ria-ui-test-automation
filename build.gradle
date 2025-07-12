@@ -22,3 +22,10 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+tasks.register('testUi', Test) {
+    useJUnitPlatform()
+    include '**/WebUiTestRunner.class'
+}
+
+

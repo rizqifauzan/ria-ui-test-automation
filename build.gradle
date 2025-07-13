@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'org.air'
+group = 'org.example'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -10,22 +10,25 @@ repositories {
 }
 
 dependencies {
+    // Selenium WebDriver
     implementation 'org.seleniumhq.selenium:selenium-java:4.20.0'
 
+    // Cucumber dependencies
     testImplementation 'io.cucumber:cucumber-java:7.15.0'
     testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.15.0'
+
+    // JUnit 5
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+
     testImplementation 'org.junit.platform:junit-platform-suite-api:1.10.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+}
+
+// Tentukan versi Java yang digunakan
+java {
+    sourceCompatibility = JavaVersion.VERSION_23
+    targetCompatibility = JavaVersion.VERSION_23
 }
 
 test {
     useJUnitPlatform()
 }
-
-tasks.register('testUi', Test) {
-    useJUnitPlatform()
-    include '**/WebUiTestRunner.class'
-}
-
-

@@ -34,15 +34,15 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run UI Tests
-        run: ./gradlew test --info
+        run: ./gradlew clean testCucumber --rerun-tasks --info
 
       - name: Print test report summary
         if: always()
-        run: ls -R build/reports/tests/test || true
+        run: ls -R build/reports/tests/testCucumber || true
 
       - name: Upload Test Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: build/reports/tests/test
+          path: build/reports/tests/testCucumber

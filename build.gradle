@@ -13,13 +13,12 @@ dependencies {
     // Selenium WebDriver
     implementation 'org.seleniumhq.selenium:selenium-java:4.20.0'
 
-    // Cucumber dependencies
+    // Cucumber with JUnit Platform (for JUnit 5)
     testImplementation 'io.cucumber:cucumber-java:7.15.0'
     testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.15.0'
 
-    // JUnit 5
+    // JUnit Jupiter (JUnit 5)
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-
     testImplementation 'org.junit.platform:junit-platform-suite-api:1.10.0'
 }
 
@@ -29,6 +28,14 @@ java {
     targetCompatibility = JavaVersion.VERSION_23
 }
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.register('testCucumber', Test) {
+    useJUnitPlatform()
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    // Khusus jalankan TestRunner
+    include '**/runners/TestRunner.class'
 }

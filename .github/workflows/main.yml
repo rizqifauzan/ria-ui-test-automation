@@ -34,7 +34,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run UI Tests
-        run: ./gradlew test
+        run: ./gradlew test --info
 
       - name: Print test report summary
         if: always()

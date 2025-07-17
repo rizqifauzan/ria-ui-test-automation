@@ -29,6 +29,8 @@ java {
     targetCompatibility = JavaVersion.VERSION_23
 }
 
-tasks.named('test') {
+tasks.register('testCucumber', Test) {
     useJUnitPlatform()
+    testLogging.showStandardStreams = true
+    outputs.upToDateWhen { false }
 }

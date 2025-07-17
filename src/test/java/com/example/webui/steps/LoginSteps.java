@@ -1,9 +1,12 @@
-package stepdefinitions;
-
 import io.cucumber.java.en.*;
+import io.cucumber.java.After;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,6 +19,7 @@ public class LoginSteps {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
         driver = new ChromeDriver(options);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get("https://the-internet.herokuapp.com/login");
     }
 
@@ -38,15 +42,28 @@ public class LoginSteps {
 
     @Then("User should be redirected to the dashboard")
     public void user_should_be_redirected_to_the_dashboard() {
-        String message = driver.findElement(By.id("flash")).getText();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement flash = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("flash")));
+        String message = flash.getText();
         assertTrue(message.contains("You logged into a secure area!"));
-        driver.quit();
     }
 
     @Then("User should see an error message")
     public void user_should_see_an_error_message() {
-        String message = driver.findElement(By.id("flash")).getText();
-        assertTrue(message.contains("Your username is invalid!") || message.contains("Your password is invalid!"));
-        driver.quit();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement flash = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("flash")));
+        String message = flash.getText();
+        assertTrue(
+                message.contains("Your username is invalid!") ||
+                        message.contains("Your password is invalid!")
+        );
+    }
+
+    @After
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
+

@@ -37,7 +37,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run UI Tests
-        run: ./gradlew clean test --info
+        run: ./gradlew clean testCucumber --info
 
       - name: Print report location
         if: always()

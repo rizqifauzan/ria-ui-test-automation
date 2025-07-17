@@ -1,4 +1,4 @@
-package runners;
+package com.example;
 
 import org.junit.platform.suite.api.*;
 
@@ -7,7 +7,7 @@ import org.junit.platform.suite.api.*;
 @SelectClasspathResource("features")
 @ConfigurationParameter(
         key = io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME,
-        value = "stepdefinitions"
+        value = "com.example.webui.steps"
 )
 @ConfigurationParameter(
         key = io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME,
@@ -15,5 +15,6 @@ import org.junit.platform.suite.api.*;
 )
 public class TestRunner {
 }
+
 
 

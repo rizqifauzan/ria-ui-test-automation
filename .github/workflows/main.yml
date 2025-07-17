@@ -39,9 +39,9 @@ jobs:
       - name: Run UI Tests
         run: ./gradlew clean testCucumber --info
 
-      - name: Print report location
+      - name: Print Report Directory
         if: always()
-        run: ls -l build/reports || true
+        run: ls -R build/reports || true
 
       - name: Upload Cucumber HTML Report
         if: always()

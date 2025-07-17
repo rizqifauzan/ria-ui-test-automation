@@ -1,7 +1,5 @@
 name: UI Web Automation
 
-name: UI Web Automation
-
 on:
   push:
     branches: [main]

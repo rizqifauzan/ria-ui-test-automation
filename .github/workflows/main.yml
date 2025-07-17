@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container:
+      image: selenium/standalone-chrome:latest
+      options: --shm-size=2g
 
     steps:
       - name: Checkout Repository
@@ -34,15 +37,15 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run UI Tests
-        run: ./gradlew clean testCucumber --rerun-tasks --info
+        run: ./gradlew clean test --info
 
-      - name: Print test report summary
+      - name: Print report location
         if: always()
-        run: ls -R build/reports/tests/testCucumber || true
+        run: ls -l build/reports || true
 
-      - name: Upload Test Report
+      - name: Upload Cucumber HTML Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-report
-          path: build/reports/tests/testCucumber
+          name: cucumber-report
+          path: build/reports/cucumber-report.html
